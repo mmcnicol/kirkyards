@@ -27,6 +27,9 @@ type Config struct {
 	PhotoBaseURL string
 	// RepoURL is the GitHub repository, for correction requests.
 	RepoURL string
+	// NoIndex asks search engines not to index the site, for temporary
+	// addresses such as the run.app URL before the domain is set up.
+	NoIndex bool
 }
 
 type Server struct {
@@ -86,6 +89,9 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h := w.Header()
 	h.Set("X-Content-Type-Options", "nosniff")
 	h.Set("Referrer-Policy", "strict-origin-when-cross-origin")
+	if s.cfg.NoIndex {
+		h.Set("X-Robots-Tag", "noindex")
+	}
 	img := "'self'"
 	if s.cfg.PhotoBaseURL != "" {
 		img += " " + s.cfg.PhotoBaseURL

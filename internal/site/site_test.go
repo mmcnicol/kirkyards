@@ -106,6 +106,17 @@ func TestStoneJSONShape(t *testing.T) {
 	}
 }
 
+func TestNoIndex(t *testing.T) {
+	s := newTestServer(t)
+	if got := get(s, "/", "").Header().Get("X-Robots-Tag"); got != "" {
+		t.Errorf("X-Robots-Tag = %q by default, want none", got)
+	}
+	s.cfg.NoIndex = true
+	if got := get(s, "/tayport-auld-kirk-cemetery/1.json", "").Header().Get("X-Robots-Tag"); got != "noindex" {
+		t.Errorf("X-Robots-Tag = %q with NoIndex, want noindex", got)
+	}
+}
+
 func TestNoPhotoBase(t *testing.T) {
 	s := newTestServer(t)
 	s.cfg.PhotoBaseURL = ""

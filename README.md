@@ -48,6 +48,7 @@ It is configured by environment variable:
 | `PORT` | Listen port (default 8080) |
 | `BASE_URL` | Public origin for canonical links and the API, e.g. `https://kirkyards.scot` |
 | `PHOTO_BASE_URL` | Where photos are served from; without it, pages show placeholders |
+| `NOINDEX` | If set, sends `X-Robots-Tag: noindex` so search engines skip a temporary address |
 
 ### URLs
 

@@ -5,6 +5,7 @@
 //	PORT            listen port (default 8080)
 //	BASE_URL        public origin (default http://localhost:PORT)
 //	PHOTO_BASE_URL  where photos are served from (default: none, show placeholders)
+//	NOINDEX         if set, ask search engines not to index the site
 package main
 
 import (
@@ -32,6 +33,7 @@ func main() {
 		BaseURL:      cmpEnv("BASE_URL", "http://localhost:"+port),
 		PhotoBaseURL: os.Getenv("PHOTO_BASE_URL"),
 		RepoURL:      "https://github.com/mmcnicol/kirkyards",
+		NoIndex:      os.Getenv("NOINDEX") != "",
 	})
 	if err != nil {
 		fatal("build site", err)
