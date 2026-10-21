@@ -1,0 +1,19 @@
+# Secrets
+.env
+.env.*
+*.pem
+*-key.json
+
+# Never commit the raw 2013 database dump: it includes a visitor search log with IP addresses.
+*.sql
+*.sql.gz
+
+# Photos live in object storage, not git.
+*.jpg
+*.JPG
+*.jpeg
+*.zip
+*.tar.gz
+
+# Build output
+/bin/
