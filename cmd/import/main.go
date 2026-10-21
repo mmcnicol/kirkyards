@@ -25,55 +25,18 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/mmcnicol/kirkyards/internal/archive"
 	"github.com/mmcnicol/kirkyards/internal/sqldump"
 )
 
-type Place struct {
-	ID           int      `json:"id"`
-	Slug         string   `json:"slug"`
-	Name         string   `json:"name"`
-	Type         string   `json:"type"`
-	Town         string   `json:"town"`
-	County       string   `json:"county"`
-	Country      string   `json:"country"`
-	ImageDir     string   `json:"imageDir"`
-	Photos       []string `json:"photos,omitempty"`
-	Stones       int      `json:"stones"`
-	Inscriptions int      `json:"inscriptions"`
-	Transcribed  int      `json:"transcribed"`
-}
-
-type Stone struct {
-	ID           int           `json:"id"`
-	Section      string        `json:"section,omitempty"`
-	Inscriptions []Inscription `json:"inscriptions"`
-}
-
-type Inscription struct {
-	ID      int      `json:"id"`
-	Face    int      `json:"face"`
-	Text    string   `json:"text"`
-	Version int      `json:"version"`
-	Photos  []string `json:"photos,omitempty"`
-	People  []Person `json:"people,omitempty"`
-}
-
-type Person struct {
-	Firstname    string `json:"firstname,omitempty"`
-	Surname      string `json:"surname,omitempty"`
-	BirthSurname string `json:"birthSurname,omitempty"`
-	Gender       string `json:"gender,omitempty"`
-	Born         *Event `json:"born,omitempty"`
-	Died         *Event `json:"died,omitempty"`
-}
-
-type Event struct {
-	Year  int  `json:"year,omitempty"`
-	Month int  `json:"month,omitempty"`
-	Day   int  `json:"day,omitempty"`
-	About bool `json:"about,omitempty"`
-	Age   int  `json:"age,omitempty"`
-}
+// The JSON shapes are shared with the web server.
+type (
+	Place       = archive.Place
+	Stone       = archive.Stone
+	Inscription = archive.Inscription
+	Person      = archive.Person
+	Event       = archive.Event
+)
 
 // resourcesPrefix is where the photos live inside the backup zip.
 const resourcesPrefix = "InscriptionImages/resources/"

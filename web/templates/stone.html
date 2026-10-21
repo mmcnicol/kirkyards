@@ -1,0 +1,31 @@
+{{define "content"}}
+{{$p := .Place}}{{$st := .Stone}}
+<nav class="crumbs"><a href="/">Kirkyards</a> › <a href="/{{$p.Slug}}">{{$p.Name}}</a> › Stone {{$st.ID}}</nav>
+<h1>{{$st.Title}}{{with $st.Years}} <span class="years">{{.}}</span>{{end}}</h1>
+<p class="lede">{{$p.Name}}, {{$p.Town}}, {{$p.County}}{{with $st.Section}}, section {{.}}{{end}}.</p>
+
+{{range $st.Inscriptions}}
+<article class="face">
+  {{if gt (len $st.Inscriptions) 1}}<h2>Face {{.Face}}</h2>{{end}}
+  <div class="face-body">
+    {{if .Text}}
+    <div class="inscription" lang="en-GB">{{range lines .Text}}<span>{{.}}</span>{{end}}</div>
+    {{else}}
+    <p class="untranscribed">Not yet transcribed. If you can read this stone, please <a href="{{$.CorrectURL}}">send a transcription</a>.</p>
+    {{end}}
+    {{range .Photos}}{{with photo $p .}}
+    <a class="photo" href="{{.}}"><img src="{{.}}" alt="Photograph of the gravestone" loading="lazy"></a>
+    {{else}}<div class="photo placeholder">Photo coming soon</div>{{end}}{{end}}
+  </div>
+</article>
+{{end}}
+
+<p class="small">Square brackets mark uncertain readings. The name in the heading is taken from the inscription automatically and may be wrong.
+{{with .CorrectURL}}<a href="{{.}}">Suggest a correction</a>.{{end}}</p>
+<p class="small">Also available as <a href="{{stoneURL $st}}.json">JSON</a> and <a href="{{stoneURL $st}}.md">Markdown</a>.</p>
+
+<nav class="pager">
+  {{with .Prev}}<a rel="prev" href="{{stoneURL .}}">‹ {{.Title}}</a>{{else}}<span></span>{{end}}
+  {{with .Next}}<a rel="next" href="{{stoneURL .}}">{{.Title}} ›</a>{{end}}
+</nav>
+{{end}}

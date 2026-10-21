@@ -1,0 +1,30 @@
+{{define "content"}}
+{{$p := .Place}}
+<nav class="crumbs"><a href="/">Kirkyards</a> › {{$p.Name}}</nav>
+<h1>{{$p.Name}}</h1>
+<p class="lede">{{$p.Town}}, {{$p.County}}. {{$p.Stones}} stones photographed; {{$p.Transcribed}} of {{$p.Inscriptions}} inscriptions transcribed.</p>
+<form class="search inline" action="/search">
+  <input type="hidden" name="place" value="{{$p.Slug}}">
+  <label class="visually-hidden" for="q-place">Search this place</label>
+  <input id="q-place" name="q" type="search" placeholder="Search {{$p.Name}}">
+  <button type="submit">Search</button>
+</form>
+
+{{with $p.Photos}}
+<div class="views">
+  {{range .}}{{with photo $p .}}<img src="{{.}}" alt="General view of {{$p.Name}}" loading="lazy">{{end}}{{end}}
+</div>
+{{end}}
+
+<ul class="stones">
+{{range .Stones}}
+  <li>
+    <a href="{{stoneURL .}}">
+      {{with .Photos}}{{with thumb $p (index . 0)}}<img src="{{.}}" alt="" loading="lazy" width="160" height="120">{{else}}<span class="nophoto"></span>{{end}}{{else}}<span class="nophoto"></span>{{end}}
+      <span class="title">{{.Title}}</span>
+      <span class="meta">{{with .Years}}{{.}}{{end}}{{if not .Transcribed}} <em>not yet transcribed</em>{{end}}{{with .Section}} · section {{.}}{{end}}</span>
+    </a>
+  </li>
+{{end}}
+</ul>
+{{end}}

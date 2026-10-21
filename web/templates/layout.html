@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{.Title}}</title>
+{{with .Description}}<meta name="description" content="{{.}}">{{end}}
+<link rel="canonical" href="{{.BaseURL}}{{.Path}}">
+{{range $type, $href := .Alternates}}<link rel="alternate" type="{{$type}}" href="{{$href}}">
+{{end}}<link rel="stylesheet" href="/static/style.css">
+<link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+{{with .JSONLD}}<script type="application/ld+json">{{.}}</script>{{end}}
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/">Kirkyards</a>
+    <form class="search" action="/search" role="search">
+      <label class="visually-hidden" for="q">Search inscriptions</label>
+      <input id="q" name="q" type="search" placeholder="Search names, years, places…" value="{{.Query}}">
+      <button type="submit">Search</button>
+    </form>
+  </div>
+</header>
+<main class="wrap">
+{{block "content" .}}{{end}}
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p>Photographed and transcribed in 2013. Transcriptions are free to reuse under
+    <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>; please credit kirkyards.scot.</p>
+    <p>For developers and AI agents: <a href="/llms.txt">llms.txt</a> · <a href="/api/places.json">JSON API</a> · <a href="https://github.com/mmcnicol/kirkyards">source on GitHub</a></p>
+  </div>
+</footer>
+</body>
+</html>

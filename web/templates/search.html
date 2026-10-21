@@ -1,0 +1,33 @@
+{{define "content"}}
+<h1>Search</h1>
+<form class="search inline" action="/search">
+  <label class="visually-hidden" for="q-search">Search inscriptions</label>
+  <input id="q-search" name="q" type="search" value="{{.Query}}" placeholder="Surname, year, trade…">
+  <label class="visually-hidden" for="place">Burial ground</label>
+  <select id="place" name="place">
+    <option value="">All burial grounds</option>
+    {{$sel := ""}}{{with .Place}}{{$sel = .Slug}}{{end}}
+    {{range .Places}}<option value="{{.Slug}}"{{if eq .Slug $sel}} selected{{end}}>{{.Name}}</option>{{end}}
+  </select>
+  <button type="submit">Search</button>
+</form>
+
+{{if .Query}}
+  {{if .Results}}
+  <p>{{if .Truncated}}Showing the first {{len .Results}} matches; add another word to narrow the search.{{else}}{{len .Results}} {{if eq (len .Results) 1}}stone{{else}}stones{{end}} found.{{end}}</p>
+  <ol class="results">
+  {{range .Results}}
+    <li>
+      <a href="{{stoneURL .Stone}}">{{.Stone.Title}}</a>
+      <span class="meta">{{.Stone.Place.Name}}{{with .Stone.Years}} · {{.}}{{end}}</span>
+      {{with .Lines}}<div class="snippet">{{range .}}<span>{{.}}</span>{{end}}</div>{{end}}
+    </li>
+  {{end}}
+  </ol>
+  {{else}}
+  <p>No stones found for “{{.Query}}”. Old spellings vary: try part of a name (“Robert” for “Robertson”), or a different spelling.</p>
+  {{end}}
+{{else}}
+<p>Every word must appear in the inscription. A word also matches longer words starting with it, so “smith” finds Smith and Smithson.</p>
+{{end}}
+{{end}}

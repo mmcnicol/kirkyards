@@ -4,9 +4,8 @@ Searchable gravestone inscriptions and photographs from kirkyards and cemeteries
 around the River Tay in Fife and Dundee, Scotland. The stones were photographed
 and transcribed in 2013.
 
-This repository will become the source for **kirkyards.scot**: a Go web app
-serving a page per stone, plus JSON and Markdown versions for agents and an
-MCP server.
+This repository is the source for **kirkyards.scot**: a Go web app serving a
+page per stone, with JSON and Markdown versions of every page for agents.
 
 ## Coverage
 
@@ -33,6 +32,45 @@ example `DIED [3?] MAY 1850`.
 
 Photo paths are relative to the place's `imageDir`. The photos themselves are
 kept in object storage, not in git.
+
+## Running the site
+
+```sh
+go run ./cmd/server                 # http://localhost:8080
+go test ./...
+```
+
+The data and templates are embedded, so the binary is self-contained.
+It is configured by environment variable:
+
+| Variable | Purpose |
+|---|---|
+| `PORT` | Listen port (default 8080) |
+| `BASE_URL` | Public origin for canonical links and the API, e.g. `https://kirkyards.scot` |
+| `PHOTO_BASE_URL` | Where photos are served from; without it, pages show placeholders |
+
+### URLs
+
+| Path | What |
+|---|---|
+| `/` | Burial grounds |
+| `/search?q=smith&place=<slug>` | Search; every word must match the start of an inscription word |
+| `/<place>` | A place and its stones |
+| `/<place>/<id>` | One stone |
+| `/llms.txt`, `/sitemap.xml`, `/robots.txt` | For agents and search engines |
+| `/api/places.json`, `/api/search.json?q=` | JSON API |
+
+Add `.json` or `.md` to a place or stone URL for JSON or Markdown, or send an
+`Accept: application/json` or `Accept: text/markdown` header.
+
+## Photos
+
+`cmd/photos` makes 1200px web photos and 400px thumbnails from the full-size
+originals in the backup zip, laid out as `PHOTO_BASE_URL` expects:
+
+```sh
+go run ./cmd/photos -zip InscriptionImages_new.zip -out ../kirkyards-photos
+```
 
 ## Regenerating the data
 

@@ -1,0 +1,34 @@
+{{define "content"}}
+<section class="intro">
+  <h1>Gravestone inscriptions around the Tay</h1>
+  <p class="lede">Photographs and transcriptions of {{.Totals.Stones}} gravestones in kirkyards and cemeteries in north Fife and Dundee.
+  {{.Totals.Transcribed}} inscriptions have been transcribed so far, word for word as carved.</p>
+  <form class="search big" action="/search" role="search">
+    <label class="visually-hidden" for="q-big">Search inscriptions</label>
+    <input id="q-big" name="q" type="search" placeholder="Try a surname, a year or a trade, e.g. shipmaster" autofocus>
+    <button type="submit">Search</button>
+  </form>
+</section>
+
+<section>
+  <h2>Burial grounds</h2>
+  <ul class="places">
+  {{range .Places}}
+    <li>
+      <a href="/{{.Slug}}">
+        <span class="name">{{.Name}}</span>
+        <span class="where">{{.Town}}, {{.County}}</span>
+        <span class="counts">{{.Stones}} stones · {{.Transcribed}} of {{.Inscriptions}} inscriptions transcribed</span>
+      </a>
+    </li>
+  {{end}}
+  </ul>
+</section>
+
+<section class="notes">
+  <h2>Reading the transcriptions</h2>
+  <p>Inscriptions are given line by line, in capitals, as they appear on the stone.
+  Words or numbers in square brackets, like <code>[1877?]</code>, were hard to read and may be wrong.
+  If you can read a stone better, or know more about the people on it, every stone page has a link to suggest a correction.</p>
+</section>
+{{end}}
